@@ -1,0 +1,126 @@
+{
+  "D:\\My Document and Work\\devops\\CICD\\serverless_cicd\\serverless.yml": {
+    "versionFramework": "4.9.1",
+    "servicePath": "D:\\My Document and Work\\devops\\CICD\\serverless_cicd\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "express-lambda",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs18.x",
+        "stage": "dev",
+        "region": "us-east-1",
+        "memorySize": 256,
+        "timeout": 10,
+        "iamRoleStatements": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "lambda:InvokeFunction",
+              "apigateway:*",
+              "s3:PutObject",
+              "s3:GetObject",
+              "s3:ListBucket"
+            ],
+            "Resource": "*"
+          }
+        ],
+        "versionFunctions": true
+      },
+      "functions": {
+        "app": {
+          "handler": "server.handler",
+          "events": [
+            {
+              "http": {
+                "path": "{proxy+}",
+                "method": "any",
+                "cors": true
+              }
+            }
+          ],
+          "name": "express-lambda-dev-app"
+        }
+      },
+      "plugins": [
+        "serverless-offline",
+        "serverless-deployment-bucket",
+        "serverless-prune-plugin"
+      ],
+      "custom": {
+        "prune": {
+          "automatic": true,
+          "number": 3
+        },
+        "deploymentBucket": {
+          "name": "serverless-deployment-bucket-us-east-1"
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs18.x",
+      "stage": "dev",
+      "region": "us-east-1",
+      "memorySize": 256,
+      "timeout": 10,
+      "iamRoleStatements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "lambda:InvokeFunction",
+            "apigateway:*",
+            "s3:PutObject",
+            "s3:GetObject",
+            "s3:ListBucket"
+          ],
+          "Resource": "*"
+        }
+      ],
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "service: express-lambda\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: nodejs18.x\r\n  stage: dev\r\n  region: us-east-1\r\n  memorySize: 256\r\n  timeout: 10\r\n  iamRoleStatements:\r\n    - Effect: Allow\r\n      Action:\r\n        - \"lambda:InvokeFunction\"\r\n        - \"apigateway:*\"\r\n        - \"s3:PutObject\"\r\n        - \"s3:GetObject\"\r\n        - \"s3:ListBucket\"\r\n      Resource: \"*\"\r\n\r\nfunctions:\r\n  app:\r\n    handler: server.handler\r\n    events:\r\n      - http:\r\n          path: \"{proxy+}\"\r\n          method: any\r\n          cors: true\r\n\r\nplugins:\r\n  - serverless-offline\r\n  - serverless-deployment-bucket\r\n  - serverless-prune-plugin\r\n\r\ncustom:\r\n  prune:\r\n    automatic: true\r\n    number: 3\r\n  deploymentBucket:\r\n    name: serverless-deployment-bucket-${self:provider.region}\r\n\r\n",
+    "command": [
+      "remove"
+    ],
+    "options": {},
+    "orgId": "a47b21da-35d9-45e3-b2b4-14021fda7d5d",
+    "orgName": "divyam2701",
+    "userId": "jZRyJCpGhtZDWLfXH6",
+    "userName": "divyam2701",
+    "serviceProviderAwsAccountId": "339713000397",
+    "serviceProviderAwsCfStackName": "express-lambda-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:339713000397:stack/express-lambda-dev/cc3dc070-0b9f-11f0-9a46-12ef115b7161",
+    "serviceProviderAwsCfStackCreated": "2025-03-28T06:42:20.417Z",
+    "serviceProviderAwsCfStackUpdated": "2025-03-28T06:59:03.547Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "AppLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:339713000397:function:express-lambda-dev-app:5",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-express-lambda-dev-AppLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://ky98q840e4.execute-api.us-east-1.amazonaws.com/dev",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-express-lambda-dev-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-35cb3118-4491",
+        "ExportName": "sls-express-lambda-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}
