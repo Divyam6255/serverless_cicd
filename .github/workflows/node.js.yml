@@ -1,0 +1,53 @@
+name: Deploy Serverless App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        npm install -g serverless
+        npm install
+        npm install serverless-offline --save-dev
+        npm install serverless-deployment-bucket --save-dev
+        npm install serverless-prune-plugin --save-dev
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    
+
+    - name: Check if Function Exists
+      id: check-function
+      continue-on-error: true
+      run: |
+        serverless info --verbose | grep "app" || exit 1
+
+    - name: Deploy Full Service (if not already deployed)
+      if: steps.check-function.outcome == 'failure'
+      env:
+        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+      run: |
+        echo "Function not found. Deploying full service..."
+        serverless deploy --verbose
+
+    - name: Deploy Code Changes Only (Lambda Function)
+      if: steps.check-function.outcome == 'success'
+      env:
+        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+      run: |
+        echo "Function exists. Deploying code changes only..."
+        serverless deploy function -f app --verbose
