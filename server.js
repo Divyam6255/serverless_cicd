@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/greet/:name", (req, res) => {
-  res.json({ message: `Bonjour, ${req.params.name}!` });
+  res.json({ message: `Bonjour moisur, ${req.params.name}!` });
 });
 
 app.get("/time", (req, res) => {
