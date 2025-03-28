@@ -51,3 +51,4 @@ jobs:
       run: |
         echo "Function exists. Deploying code changes only..."
         serverless deploy function -f app --verbose
+        serverless remove 
